@@ -1,83 +1,82 @@
 import React from "react";
-import { render, fireEvent, waitFor, screen } from "@testing-library/react";
+import {
+  render,
+  waitFor,
+  screen,
+  fireEvent,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { Provider } from "react-redux";
+import { createMemoryHistory } from "history";
 import configureStore from "redux-mock-store";
+import { Router } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 import AddPost from "../index";
+import "@testing-library/jest-dom";
+import Home from "../../../Home/index";
+import { MemoryRouter } from "react-router-dom";
+import { renderWithProviders } from "../../../../utils/test-utils";
+import { jest } from "@jest/globals";
 
-const mockStore = configureStore([]);
+it("should render the component and add a ticket", async () => {
+  renderWithProviders(<AddPost />);
+  screen.debug();
+  // Fill in the form fields using userEvent
+  await userEvent.type(screen.getByPlaceholderText("Full name"), "John Smith");
+  await userEvent.type(
+    screen.getByPlaceholderText("Email"),
+    "johnsmith@gmail.com"
+  );
+  await userEvent.type(
+    screen.getByPlaceholderText("subject"),
+    "New Ticket Subject"
+  );
 
-describe("AddPost component", () => {
-  it("should render the component and add a ticket", async () => {
-    const store = mockStore({ tickets: [] });
-    render(
-      <Provider store={store}>
-        <AddPost />
-      </Provider>
-    );
+  await userEvent.selectOptions(screen.getByRole("combobox"), "twitter");
+  // Submit the form using userEvent
+  await userEvent.click(screen.getByRole("button", { name: /add ticket/i }));
+  // Assert that the addticket function is called with the correct data
+  // renderWithProviders(<Home />);
 
-    // Fill in the form fields
-    fireEvent.change(screen.getByPlaceholderText("Full name"), {
-      target: { value: "John Smith" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("Email"), {
-      target: { value: "johnsmith@example.com" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("subject"), {
-      target: { value: "New Ticket Subject" },
-    });
+  // screen.debug();
+  // Assert that the success toast is displayed
 
-    // Select a value from the dropdown
-    fireEvent.change(screen.getByRole("combobox"), {
-      target: { value: "twitter" },
-    });
+  expect(
+    await screen.findByText(/ticket added successfully!!/i)
+  ).toBeInTheDocument();
+  // Assert that the history object has been pushed to '/'
+  expect(window.location.pathname).toBe("/");
+});
 
-    // Submit the form
-    fireEvent.click(screen.getByRole("button", { name: /add ticket/i }));
+it("should display a warning toast if any field is missing", async () => {
+  renderWithProviders(<AddPost />);
 
-    // Assert that the success toast is displayed
-    //await waitFor(() => expect(toast.success).toHaveBeenCalled());
+  // Fill in some form fields using userEvent, but leave one empty
+  userEvent.type(screen.getByPlaceholderText("Full name"), "John Smith");
+  userEvent.type(screen.getByPlaceholderText("subject"), "New Ticket Subject");
+  userEvent.selectOptions(screen.getByRole("combobox"), "twitter");
 
-    // Assert that the store has received the correct action
-    const actions = store.getActions();
-    expect(actions).toHaveLength(1);
-    expect(actions[0]).toEqual({
-      type: "ADD_ticket",
-      payload: {
-        id: expect.any(Number),
-        name: "John Smith",
-        email: "johnsmith@example.com",
-        subject: "New Ticket Subject",
-        medium: "twitter",
-      },
-    });
-  });
+  // Submit the form using userEvent
+  userEvent.click(screen.getByRole("button", { name: /add ticket/i }));
 
-  it("should display a warning toast if any field is missing", async () => {
-    const store = mockStore({ tickets: [] });
-    render(
-      <Provider store={store}>
-        <AddPost />
-      </Provider>
-    );
+  //expect to show the warning toast if any field is missing
+  expect(
+    await screen.findByText(/Please fill in all fields!!/i)
+  ).toBeInTheDocument();
 
-    // Fill in some form fields, but leave one empty
-    fireEvent.change(screen.getByPlaceholderText("Full name"), {
-      target: { value: "John Smith" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("subject"), {
-      target: { value: "New Ticket Subject" },
-    });
+  //expect warning to be removed after sometime
+  // expect(
+  //   waitForElementToBeRemoved(screen.getByText(/Please fill in all fields/i))
+  // ).toBeTruthy();
+  await waitForElementToBeRemoved(() =>
+    screen.getByText(/Please fill in all fields/i)
+  ).then(() => console.log("element has been removed"));
 
-    // Submit the form
-    fireEvent.click(screen.getByRole("button", { name: /add ticket/i }));
-    screen.debug();
-    // Assert that the warning toast is displayed
-    // const success = await screen.findByText(/ticket added successfully!!/i);
-    //  expect(success).toBeInTheDocument();
-
-    // Assert that the store has not received any actions
-    const actions = store.getActions();
-    expect(actions).toHaveLength(0);
-  });
+  //expect Stay on the same page
+  expect(
+    screen.getByRole("heading", { name: /add ticket/i })
+  ).toBeInTheDocument();
 });

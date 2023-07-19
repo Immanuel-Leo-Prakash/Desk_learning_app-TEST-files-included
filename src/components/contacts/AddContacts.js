@@ -36,6 +36,7 @@ const AddContact = ({ contact, deleteContact, addContact }) => {
           >
             <input
               type="text"
+              aria-label="name"
               placeholder="name"
               className="form-control col-md-2 col"
               value={name}
@@ -44,6 +45,7 @@ const AddContact = ({ contact, deleteContact, addContact }) => {
             <br />
             <input
               type="text"
+              aria-label="email"
               placeholder="email"
               className="form-control col-md-2"
               value={email}
@@ -52,6 +54,7 @@ const AddContact = ({ contact, deleteContact, addContact }) => {
             <br />
             <input
               type="text"
+              aria-label="phone number"
               placeholder="phone number"
               className="form-control col-md-2"
               value={phno}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, useLocation, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import AddPost from "./components/Tickets/AddTicket";
 import EditContact from "./components/Tickets/EditTicket";
@@ -12,6 +12,11 @@ import { contactReducer } from "./redux/reducers/contactReducer";
 import { createStore } from "redux";
 import PropTypes from "prop-types";
 import { AddContactForm, ListView } from "./components/contacts/AddContacts";
+export const LocationDisplay = () => {
+  const location = useLocation();
+
+  return <div data-testid="location-display">{location.pathname}</div>;
+};
 const App = () => {
   const store = createStore(contactReducer);
   store.proptypes = {
@@ -27,18 +32,22 @@ const App = () => {
     <div>
       <ToastContainer />
       <Navbar />
-      <Route exact path="/" component={() => <Home />} />
-      <Route exact path="/add" component={() => <AddPost />} />
-      <Route exact path="/edit/:id" component={() => <EditContact />} />
-      <Route
-        path="/customers"
-        component={() => (
-          <Provider store={store}>
-            <AddContact />
-          </Provider>
-        )}
-      />
-      <Route path="/KnowledgeBase" component={() => <Knowledge />} />
+      <Switch>
+        <Route exact path="/" component={() => <Home />} />
+        <Route exact path="/add" component={() => <AddPost />} />
+        <Route exact path="/edit/:id" component={() => <EditContact />} />
+        <Route
+          path="/customers"
+          component={() => (
+            <Provider store={store}>
+              <AddContact />
+            </Provider>
+          )}
+        />
+        <Route path="/KnowledgeBase" component={() => <Knowledge />} />
+      </Switch>
+
+      <LocationDisplay />
     </div>
   );
 };

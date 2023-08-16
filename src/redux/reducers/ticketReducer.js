@@ -8,24 +8,24 @@ const initialState = [
     email: "kiren@zohocorp.com",
     phno: 987654321,
   },
-  // {
-  //   id: 2,
-  //   subject: 'Refund needed',
-  //   name: 'Sharmila',
-  //   priority: 'High',
-  //   medium: 'twitter',
-  //   email: 'Sharmila@zohocorp.com',
-  //   phno: 987654321
-  // },
-  // {
-  //   id: 3,
-  //   subject: 'Replacement ',
-  //   name: 'Ramya ',
-  //   priority: 'Low',
-  //   medium: 'mail',
-  //   email: 'ramya@zohocorp.com',
-  //   phno: 987654321
-  // },
+  {
+    id: 2,
+    subject: "Refund needed",
+    name: "Sharmila",
+    priority: "High",
+    medium: "twitter",
+    email: "Sharmila@zohocorp.com",
+    phno: 987654321,
+  },
+  {
+    id: 3,
+    subject: "Replacement ",
+    name: "Ramya ",
+    priority: "Low",
+    medium: "mail",
+    email: "ramya@zohocorp.com",
+    phno: 987654321,
+  },
   // {
   //   id: 4,
   //   subject: 'Speaker problem',

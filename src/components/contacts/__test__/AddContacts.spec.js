@@ -1,5 +1,4 @@
-import { screen, within } from "@testing-library/react";
-import { render } from "../../../utils/test-utils";
+import { screen, within, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import AddContact from "../AddContacts";
 import { contactReducer } from "../../../redux/reducers/contactReducer";
@@ -8,15 +7,12 @@ import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
+import { renderWithContactReducer } from "../../../utils/test-utils";
 
 beforeEach(() => {
   const history = createMemoryHistory();
 
-  render(
-    <Router history={history}>
-      <AddContact />
-    </Router>
-  );
+  renderWithContactReducer(<AddContact />);
 });
 
 test("Adding New Contacts", async () => {

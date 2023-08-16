@@ -12,6 +12,7 @@ import { contactReducer } from "./redux/reducers/contactReducer";
 import { createStore } from "redux";
 import PropTypes from "prop-types";
 import { AddContactForm, ListView } from "./components/contacts/AddContacts";
+
 export const LocationDisplay = () => {
   const location = useLocation();
 
@@ -33,9 +34,9 @@ const App = () => {
       <ToastContainer />
       <Navbar />
       <Switch>
-        <Route exact path="/" component={() => <Home />} />
-        <Route exact path="/add" component={() => <AddPost />} />
-        <Route exact path="/edit/:id" component={() => <EditContact />} />
+        <Route exact path="/" component={Home} />
+        <Route exact path="/add" component={AddPost} />
+        <Route exact path="/edit/:id" component={EditContact} />
         <Route
           path="/customers"
           component={() => (
@@ -47,7 +48,7 @@ const App = () => {
         <Route path="/KnowledgeBase" component={() => <Knowledge />} />
       </Switch>
 
-      <LocationDisplay />
+      {/* <LocationDisplay /> */}
     </div>
   );
 };

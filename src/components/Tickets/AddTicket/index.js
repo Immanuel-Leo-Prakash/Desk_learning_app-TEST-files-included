@@ -4,16 +4,6 @@ import { useHistory } from "react-router";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import propTypes from "prop-types";
-// export const renderWithToastify = (component) => {
-//   return (
-//     <>
-//       <div>
-//         <ToastContainer />
-//         {component}
-//       </div>
-//     </>
-//   );
-// };
 
 const AddPost = ({ tickets, addticket }) => {
   const [name, setName] = useState("");

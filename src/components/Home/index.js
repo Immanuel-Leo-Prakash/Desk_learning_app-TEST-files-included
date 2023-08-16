@@ -48,6 +48,7 @@ const Home = ({ ticket, deleteticket }) => (
                     Edit
                   </Link>
                   <button
+                    id={id}
                     type="button"
                     onClick={() => deleteticket(ticket.id)}
                     className="btn btn-sm btn-danger"

@@ -5,15 +5,28 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
+import {
+  Router,
+  Link,
+  createHistory,
+  createMemorySource,
+  LocationProvider,
+} from "@reach/router";
+import "@testing-library/jest-dom";
+
+// import { Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
-import { renderWithProviders } from "../../../utils/test-utils";
+import {
+  renderWithTicketReducer,
+  renderWithRouter,
+} from "../../../utils/test-utils";
 import Home from "../index";
 import "@testing-library/jest-dom";
-import Editticket from "../../Tickets/EditTicket/index";
+import { Provider } from "react-redux";
+import { createMemoryHistory } from "history";
 
-// import { userEvent } from "@testing-library/user-event/dist/types/setup";
 beforeEach(() => {
-  renderWithProviders(<Home />);
+  renderWithTicketReducer(<Home />);
 });
 test("Click delete button will delete the ticket from list", async () => {
   //before delete the contact
@@ -39,14 +52,4 @@ test("No ticket found message appear when no tickets in the page", async () => {
   expect(
     screen.getByRole("columnheader", { name: /no ticket found/i })
   ).toBeVisible();
-});
-
-test("Changes in Edit page will reflect ticket show page ", () => {
-  renderWithProviders(
-    <>
-      {/* <Editticket /> */}
-      {/* <Home /> */}
-    </>
-  );
-  screen.debug();
 });

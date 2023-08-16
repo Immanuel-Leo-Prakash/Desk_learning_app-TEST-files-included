@@ -13,7 +13,6 @@ import {
   render,
   waitFor,
   screen,
-  fireEvent,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import { ToastContainer } from "react-toastify";
@@ -27,26 +26,21 @@ import AddPost from "../index";
 import "@testing-library/jest-dom";
 import Home from "../../../Home/index";
 import { MemoryRouter } from "react-router-dom";
-import { renderWithProviders } from "../../../../utils/test-utils";
+import { renderWithTicketReducer } from "../../../../utils/test-utils";
 import { jest } from "@jest/globals";
 import { act } from "react-dom/test-utils";
 import { createMemoryHistory } from "history";
 
 beforeEach(() => {
-  // const history = createMemoryHistory();
-  // history.push("/");
-  renderWithProviders(
-    // <Router history={history}>
+  renderWithTicketReducer(
     <>
       <AddPost />
       <Home />
     </>
-    //  </Router>
   );
 });
 test("should appear success messsage and add a ticket in the Home", async () => {
   // Fill in the form fields using userEvent
-
   await userEvent.type(screen.getByPlaceholderText("Full name"), "John Smith");
   await userEvent.type(
     screen.getByPlaceholderText("Email"),
@@ -61,13 +55,13 @@ test("should appear success messsage and add a ticket in the Home", async () => 
   await userEvent.click(screen.getByRole("button", { name: /add ticket/i }));
 
   //Toast success message appears
-
   expect(
     await screen.findByText(/ticket added successfully!!/i)
   ).toBeInTheDocument();
+
   //ticket to be added successfully
   expect(screen.getByText(/john smith/i)).toBeInTheDocument();
-  waitForElementToBeRemoved(screen.getByRole("alert"));
+  // screen.debug();
 });
 
 test("should display a warning toast if any field is missing", async () => {
